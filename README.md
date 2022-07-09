@@ -1,2 +1,89 @@
 # VBA-challenge
 VBA of Wall Street 2nd Challenge 
+Sub Multi_Year_Stock_Data():
+    
+
+        Range("I1") = "Stock Symbol"
+        Range("J1") = "Fiscal Change"
+        Range("K1") = "Percentage Change"
+        Range("L1") = "Volume Total"
+    
+    Dim Stock_Symbol As String
+    Dim Fiscal_Change As Double
+    Dim Percentage_Change As Double
+    Dim Volume_Total As LongLong
+    Volume_Total = 0
+    Dim i As Long
+    Dim Open_Fiscal As Double
+    Dim Close_Fiscal As Double
+    
+    
+    Dim lastrow As Long
+    Dim lastcolumn As Long
+    lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+    lastcolumn = Cells(1, Columns.Count).End(xlToLeft).Column
+    
+    
+    Dim Summary_Table_Row As Integer
+    Summary_Table_Row = 2
+    
+    
+    
+    For i = 2 To lastrow
+        
+        Volume_Total = Volume_Total + CLngLng(Cells(i, 7).Value)
+        
+        
+        If Cells(i - 1, 1).Value <> Cells(i, 1).Value Then
+            Open_Fiscal = Cells(i, 3).Value
+        End If
+        
+        
+        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+            
+            Stock_Symbol = Cells(i, 1).Value
+            
+            Close_Fiscal = Cells(i, 6).Value
+            
+            Range("I" & Summary_Table_Row).Value = Stock_Symbol
+            
+            Range("L" & Summary_Table_Row).Value = Volume_Total
+            
+            Fiscal_Change = Close_Fiscal - Open_Fiscal
+            
+            Range("J" & Summary_Table_Row).Value = Fiscal_Change
+            
+            Percentage_Change = Close_Fiscal / Open_Fiscal - 1
+            Range("K" & Summary_Table_Row).Value = Percentage_Change
+            
+            
+            Range("K" & Summary_Table_Row).Style = "Percent"
+            Range("K" & Summary_Table_Row).NumberFormat = "0.00%"
+                    
+            
+          
+            Volume_Total = 0
+            
+            
+            
+            If Range("J" & Summary_Table_Row).Value >= 0 Then
+        Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+        
+        Else: Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+        
+         End If
+        
+        
+        Summary_Table_Row = Summary_Table_Row + 1
+            
+     End If
+        
+        
+        
+     
+        
+        
+     Next i
+        
+
+End Sub
